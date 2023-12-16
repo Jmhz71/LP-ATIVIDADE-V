@@ -1,0 +1,118 @@
+/*alunos : jônatas bispo,kauan santana;*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+#include <string.h>
+
+struct dados_produto
+{
+    int produtoquant;
+    char nome[200];
+    float valor;
+    float valortotal;
+};
+void cabecalho()
+{
+    printf("\n\tMenu\t\n");
+    printf("1:\t Cadastrar Produto.\t\n");
+    printf("2:\t Venda de Produto.\t\n");
+    printf("3:\t Produtos Defeituosos.\t\n");
+    printf("4:\t Exibir Estoque\t\n");
+    printf("5:\t Sair do Programa.\t\n");
+    printf("\n\n");
+}
+
+float valortotalproduto(struct dados_produto produto)
+{
+    return produto.valor * produto.produtoquant;
+}
+
+void produtosdefeituosos(struct dados_produto *produto, int proddefeito)
+{
+    int voltar;
+    voltar = produto->produtoquant -= proddefeito;
+
+    printf("Total de produtos defeituosos:%d\n", proddefeito);
+    printf("Total de produtos em boas condições no estoque:%d\n", voltar);
+}
+
+void compraprodutos(struct dados_produto *produto, int quantidadecomprada)
+{
+    float mult;
+    mult = quantidadecomprada * produto->valor;
+    if (quantidadecomprada > 0)
+    {
+        produto->produtoquant -= quantidadecomprada;
+        printf("Quantidade vendida: %d\n", quantidadecomprada);
+        printf("Valor Total de venda:%.2f\n", mult);
+    }
+    else
+    {
+        printf("Quantidade invalida");
+    }
+}
+
+void exibicao(struct dados_produto produto)
+{
+
+    printf("Nome do produto cadastrado:%s\n", produto.nome);
+    printf("Quantidade do produto cadastrado: %d\n", produto.produtoquant);
+    printf("Valor do produto cadastrado:R$%.2f\n", produto.valor);
+    printf("Valor total do produto cadastrado:R$%.2f\n", valortotalproduto(produto));
+}
+
+int main()
+{
+    setlocale(LC_ALL, "portuguese");
+    struct dados_produto produto;
+    int escolha;
+    int quantidadecomprada;
+    int proddefeito;
+
+    do
+    {
+        cabecalho();
+
+        printf("Escolha uma das opções:\n");
+        scanf("%d", &escolha);
+        switch (escolha)
+        {
+
+        case 1:
+            system("cls||clear");
+            printf("Quantidade do produto cadastrado:\n");
+            scanf("%d", &produto.produtoquant);
+            printf("Valor do produto cadastrado:\n");
+            scanf("%f", &produto.valor);
+            fflush(stdin);
+            printf("Nome do produto cadastrado:\n");
+            gets(produto.nome);
+            system("cls||clear");
+            break;
+        case 2:
+            system("cls||clear");
+            printf("Quantidade de produto que deseja vender: \n");
+            scanf("%d", &quantidadecomprada);
+
+            compraprodutos(&produto, quantidadecomprada);
+
+            break;
+        case 3:
+            system("cls||clear");
+            printf("Quantidade de produtos defeituosos:\n");
+            scanf("%d", &proddefeito);
+            produtosdefeituosos(&produto, proddefeito);
+
+            break;
+        case 4:
+            system("cls||clear");
+            exibicao(produto);
+
+            break;
+        }
+
+    } while (escolha != 5);
+
+    return 0;
+}
